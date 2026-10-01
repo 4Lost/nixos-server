@@ -24,7 +24,7 @@
     nameservers = [ "1.1.1.1" ];
 
     enableIPv6 = false;
-  }
+  };
 
   services.fstrim.enable = false; # Let Proxmox host handle fstrim
 
@@ -50,6 +50,7 @@
 
   environment.systemPackages = with pkgs; [
     vim
+    git
   ];
 
   system.stateVersion = "26.05";
