@@ -8,8 +8,8 @@ let
 
     rm -rf /home/elias/backup
     mkdir /home/elias/backup
-    cp /var/lib/firefly-iii/storage/database /home/elias/backup/database
-    cp /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
+    cp -r /var/lib/firefly-iii/storage/database /home/elias/backup/database
+    cp -r /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
     cp /var/lib/firefly-iii-secrets/app-key /home/elias/backup/app-key
   '';
 in
