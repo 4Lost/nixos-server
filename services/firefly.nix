@@ -1,5 +1,14 @@
-{ ... }:
+{ pkgs, ... }:
 
+let
+  backupScript = pkgs.writeShellScript "backup.sh" ''
+    rm -rf /home/elias/backup
+    mkdir /home/elias/backup
+    cp /var/lib/firefly-iii/storage/database /home/elias/backup/database
+    cp /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
+    cp /var/lib/firefly-iii-secrets/app-key /home/elias/backup/app-key
+  '';
+in
 {
   networking = {
     interfaces.eth0.ipv4.addresses = [
@@ -27,15 +36,7 @@
     };
   };
 
-  home.file."backup.sh" = {
-    text = ''
-      rm -rf /home/elias/backup
-      mkdir /home/elias/backup
-      cp /var/lib/firefly-iii/storage/database /home/elias/backup/database
-      cp /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
-      cp /var/lib/firefly-iii-secrets/app-key /home/elias/backup/app-key
-    '';
-
-    executable = true;
-  };
+  systemd.tmpfiles.rules = [
+    "L+ /home/elias/backup.sh - - - - ${backupScript}"
+  ];
 }
