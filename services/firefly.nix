@@ -2,7 +2,10 @@
 
 let
   backupScript = pkgs.writeShellScript "backup.sh" ''
-    #!/bin/bash
+    #!/usr/bin/env bash
+
+    export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:$PATH"
+
     rm -rf /home/elias/backup
     mkdir /home/elias/backup
     cp /var/lib/firefly-iii/storage/database /home/elias/backup/database
