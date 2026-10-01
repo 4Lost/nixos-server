@@ -2,6 +2,7 @@
 
 let
   backupScript = pkgs.writeShellScript "backup.sh" ''
+    #!/bin/bash
     rm -rf /home/elias/backup
     mkdir /home/elias/backup
     cp /var/lib/firefly-iii/storage/database /home/elias/backup/database
