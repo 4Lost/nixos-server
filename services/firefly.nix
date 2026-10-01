@@ -8,6 +8,8 @@
         prefixLength = 24;
       }
     ];
+
+    firewall.allowedTCPPorts = [ 80 ];
   };
 
   services.firefly-iii = {
