@@ -14,7 +14,7 @@
     enable = true;
 
     enableNginx = true;
-    virtualHost = "192.168.3.201";
+    virtualHost = "firefly.local";
     dataDir = "/var/lib/firefly-iii";
 
     settings = {
