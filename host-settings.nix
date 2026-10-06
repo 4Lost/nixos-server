@@ -15,7 +15,7 @@
       "${
         builtins.fetchTarball {
           url = "https://github.com/Mic92/sops-nix/archive/${commit}.tar.gz";
-          sha256 = "sha256-0qmskz73girklipfmxwp7w4fmnl6pfjwjdqymvrpqnri0rw";
+          sha256 = "0qmskz73girklipfmxwp7w4fmnl6pfjwjdqymvrpqnri0rw6dkxf";
         }
       }/modules/sops"
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
@@ -61,8 +61,8 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
 
-    users.users.elias.openssh.authorizedKeys.keyFiles = [
-      config.sops.secrets.ssh_keys.path
+    users.users.elias.openssh.authorizedKeys.keys = [
+      config.sops.secrets.ssh_keys.text
     ];
   };
 
