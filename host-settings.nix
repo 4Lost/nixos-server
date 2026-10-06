@@ -68,7 +68,7 @@
     extraGroups = [ "wheel" ];
 
     openssh.authorizedKeys.keys = [
-      config.sops.secrets.ssh_key.text
+      config.sops.secrets.ssh_key
     ];
   };
 
