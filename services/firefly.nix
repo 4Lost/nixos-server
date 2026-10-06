@@ -18,7 +18,12 @@ let
   '';
 in
 {
-  sops.secrets.firefly_key = { };
+  sops.secrets.firefly_key = {
+    owner = "firefly-iii";
+    group = "nginx";
+    mode = "0400";
+  };
+
   services.firefly-iii = {
     enable = true;
 

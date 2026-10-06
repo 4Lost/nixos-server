@@ -1,5 +1,4 @@
 {
-  config,
   host,
   modulesPath,
   pkgs,
@@ -56,8 +55,10 @@
       KbdInteractiveAuthentication = false;
     };
   };
-
-  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    age.keyFile = "/etc/sops/key.txt";
+  };
 
   users.users.elias = {
     isNormalUser = true;
