@@ -18,6 +18,7 @@ let
   '';
 in
 {
+  sops.secrets.firefly_key = { };
   services.firefly-iii = {
     enable = true;
 

@@ -57,12 +57,18 @@
     };
   };
 
+  sops = {
+    secrets.ssh_key = { };
+    defaultSopsFile = ./secrets/secrets.yaml;
+
+  };
+
   users.users.elias = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
 
-    users.users.elias.openssh.authorizedKeys.keys = [
-      config.sops.secrets.ssh_key.txt
+    openssh.authorizedKeys.keys = [
+      config.sops.secrets.ssh_key.text
     ];
   };
 
