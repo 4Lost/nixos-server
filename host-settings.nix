@@ -15,7 +15,7 @@
       "${
         builtins.fetchTarball {
           url = "https://github.com/Mic92/sops-nix/archive/${commit}.tar.gz";
-          sha256 = "sha256-u0zSypQ7HQYK3p04eO7/ZAdeikBw6B7UY35cid0GXCU=";
+          sha256 = "sha256-0qmskz73girklipfmxwp7w4fmnl6pfjwjdqymvrpqnri0rw6dkxf";
         }
       }/modules/sops"
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
