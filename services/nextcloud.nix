@@ -17,7 +17,7 @@ let
 in
 {
   sops.secrets.nextcloud_pwd = { };
-  environment.etc."nextcloud-admin-pass".text = config.sops.secrets."nextcloud_pwd";
+  environment.etc."nextcloud-admin-pass".path = config.sops.secrets."nextcloud_pwd".path;
 
   services.nextcloud = {
     enable = true;
