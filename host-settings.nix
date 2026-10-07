@@ -20,6 +20,11 @@
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
 
+  nix.settngs.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   networking = {
     useDHCP = false;
     enableIPv6 = false;
