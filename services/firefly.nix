@@ -39,6 +39,8 @@ in
     };
   };
 
+  i18n.defaultlocale = "de_DE.utf8";
+
   systemd.tmpfiles.rules = [
     "L+ /home/elias/backup.sh - - - - ${backupScript}"
   ];
