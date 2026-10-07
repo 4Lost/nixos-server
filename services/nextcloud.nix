@@ -26,7 +26,7 @@ in
 
   services.nextcloud = {
     enable = true;
-    hostName = host.hostname;
+    hostName = host.address;
     config.adminpassFile = config.sops.secrets."nextcloud_pwd".path;
     config.dbtype = "sqlite";
     settings = {
