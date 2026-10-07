@@ -16,8 +16,13 @@ let
   '';
 in
 {
-  sops.secrets.nextcloud_pwd = { };
-  environment.etc."nextcloud-admin-pass".path = config.sops.secrets."nextcloud_pwd".path;
+  sops.secrets.nextcloud_pwd = {
+    owner = "nextcloud";
+    group = "nextcloud";
+    mode = "0400";
+  };
+
+  environment.etc."nextcloud-admin-pass".source = config.sops.secrets."nextcloud_pwd".path;
 
   services.nextcloud = {
     enable = true;
