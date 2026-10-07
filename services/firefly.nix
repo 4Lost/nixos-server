@@ -39,14 +39,6 @@ in
     };
   };
 
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    supportedLocales = [
-      "en_US.UTF-8/UTF-8"
-      "de-DE.UTF-8/UTF-8"
-    ];
-  };
-
   systemd.tmpfiles.rules = [
     "L+ /home/elias/backup.sh - - - - ${backupScript}"
   ];
