@@ -20,10 +20,14 @@
       (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ];
 
-  nix.settngs.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+
+    sandbox = false;
+  };
 
   networking = {
     useDHCP = false;
@@ -40,8 +44,6 @@
     defaultGateway = "192.168.3.1";
     nameservers = [ "1.1.1.1" ];
   };
-
-  nix.settings.sandbox = false;
 
   proxmoxLXC = {
     manageNetwork = true;
