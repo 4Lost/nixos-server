@@ -1,5 +1,4 @@
 {
-  host,
   modulesPath,
   pkgs,
   ...
@@ -27,21 +26,18 @@
     ];
 
     sandbox = false;
+    trusted-users = [
+      "root"
+      "elias"
+    ];
   };
+
+  security.sudo.wheelNeedsPassword = false;
 
   networking = {
     useDHCP = false;
     enableIPv6 = false;
-
-    interfaces.eth0.ipv4.addresses = [
-      {
-        address = host.ip;
-        prefixLength = 24;
-      }
-    ];
-
-    firewall.allowedTCPPorts = host.firewall;
-    defaultGateway = "192.168.3.1";
+    defaultGateway = "192.168.0.1";
     nameservers = [ "1.1.1.1" ];
   };
 
@@ -79,6 +75,7 @@
   environment.systemPackages = with pkgs; [
     vim
     git
+    colmena
   ];
 
   system.stateVersion = "26.05";
