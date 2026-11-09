@@ -19,6 +19,7 @@
       firefly = import ./services/firefly.nix;
       nextcloud = import ./services/nextcloud.nix;
       minecraft = import ./services/minecraft.nix;
+      nginx = import ./services/nginx;
     };
   };
 }

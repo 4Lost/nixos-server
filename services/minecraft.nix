@@ -12,7 +12,7 @@ let
 
     rm -rf /home/elias/backup
     mkdir /home/elias/backup
-  '';
+  ''; # TODO
 
   host = {
     name = "nextcloud";
