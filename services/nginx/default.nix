@@ -37,7 +37,7 @@ in
 
   security.acme = {
     acceptTerms = true;
-    default.email = "elias.schroeter@e.email";
+    defaults.email = "elias.schroeter@e.email";
 
     certs = {
       "firefly.dodekaeder.name" = { };
@@ -54,13 +54,12 @@ in
 
     serviceConfig = {
       Type = "oneshot";
-      EnvironmentFile = "/etc/hetzner-dns.env";
+      RemainAfterExit = false;
     };
 
     script = ''
-        #!/usr/bin/env bash
-
-        export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:$PATH"
+      #!/usr/bin/env bash
+      export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.curl}/bin:$PATH"
 
       token="$(cat /run/secrets/hetzner-api-token)"
       current_ip="$(curl -fsS https://api.ipify.org)"
@@ -86,8 +85,9 @@ in
 
   systemd.timers.hetzner-dns-update = {
     wantedBy = [ "timers.target" ];
+
     timerConfig = {
-      OnBootSec = "1min";
+      OnActiveSec = "1min";
       OnUnitActiveSec = "5min";
       Unit = "hetzner-dns-update.service";
     };

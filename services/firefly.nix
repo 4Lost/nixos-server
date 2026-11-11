@@ -18,7 +18,7 @@ let
 
   host = {
     name = "firefly";
-    address = "192.168.0.201"; # firefly.dodekaeder.name
+    address = "firefly.dodekaeder.name";
     ip = "192.168.0.201";
     port = 22;
     firewall = [ 80 ];

@@ -16,7 +16,7 @@ let
 
   host = {
     name = "nextcloud";
-    address = "192.168.0.202"; # cloud.dodekaeder.name
+    address = "cloud.dodekaeder.name";
     ip = "192.168.0.202";
     port = 22;
     firewall = [ 80 ];
