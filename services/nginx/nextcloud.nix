@@ -14,14 +14,19 @@
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_ssl_server_name on;
       proxy_pass_header Authorization;
+      add_header Strict-Transport-Security "max-age=15552000" always;
     '';
   };
 
-  locations."/.well-known/carddav" = {
-    return = "301 $scheme://$host/remote.php/dav";
+  locations."= /.well-known/carddav" = {
+    return = "301 /remote.php/dav/";
   };
 
-  locations."/.well-known/caldav" = {
-    return = "301 $scheme://$host/remote.php/dav";
+  locations."= /.well-known/caldav" = {
+    return = "301 /remote.php/dav/";
+  };
+
+  locations."^~ /.well-known" = {
+    return = "301 /index.php$request_uri";
   };
 }

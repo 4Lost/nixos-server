@@ -18,8 +18,8 @@
       defaults = import ./system/host.nix;
 
       firefly = import ./services/firefly.nix;
-      nextcloud = import ./services/nextcloud.nix;
-      minecraft = import ./services/minecraft.nix;
+      nextcloud = import ./services/nextcloud;
+      # minecraft = import ./services/minecraft.nix;
       nginx = import ./services/nginx;
     };
   };
