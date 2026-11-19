@@ -25,6 +25,7 @@ in
 {
   _module.args.host = host;
   imports = [ ../colmena.nix ];
+  networking.enableIPv6 = false;
 
   services.minecraft-server = {
     enable = true;

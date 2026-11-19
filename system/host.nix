@@ -36,13 +36,24 @@
 
   networking = {
     useDHCP = false;
-    enableIPv6 = false;
-    defaultGateway = "192.168.0.1";
-    nameservers = [ "1.1.1.1" ];
+    nameservers = [
+      "1.1.1.1"
+      "2a02:8100:c0:249::4:1101"
+      "2a02:8100:c0:241::4:1101"
+    ];
+  };
+
+  services.resolved = {
+    enable = true;
+
+    settings.Resolve = {
+      Cache = true;
+      CacheFromLocalhost = true;
+    };
   };
 
   proxmoxLXC = {
-    manageNetwork = true;
+    manageNetwork = false;
     privileged = false;
   };
 
@@ -59,7 +70,7 @@
     };
   };
   sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ../secrets/secrets.yaml;
     age.keyFile = "/etc/sops/key.txt";
   };
 

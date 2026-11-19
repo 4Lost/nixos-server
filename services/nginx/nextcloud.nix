@@ -1,11 +1,11 @@
-{ ... }:
+{ domainName, ... }:
 
 {
-  enableACME = true;
   forceSSL = true;
+  useACMEHost = "${domainName}";
 
   locations."/" = {
-    proxyPass = "https://192.168.0.202:443";
+    proxyPass = "http://192.168.0.202:80";
 
     extraConfig = ''
       proxy_set_header Host $host;

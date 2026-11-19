@@ -19,13 +19,16 @@ let
     address = "cloud.dodekaeder.name";
     ip = "192.168.0.202";
     port = 22;
-    firewall = [ 80 ];
+    firewall = [
+      80
+      443
+    ];
   };
 in
 {
   _module.args.host = host;
   imports = [
-    ../colmena.nix
+    ../system/colmena.nix
     "${
       builtins.fetchTarball {
         url = "https://github.com/onny/nixos-nextcloud-testumgebung/archive/fa6f062830b4bc3cedb9694c1dbf01d5fdf775ac.tar.gz";
@@ -33,6 +36,7 @@ in
       }
     }/nextcloud-extras.nix"
   ];
+  networking.enableIPv6 = false;
 
   sops.secrets.nextcloud_elias_pwd = {
     owner = "nextcloud";
@@ -50,6 +54,11 @@ in
       default_phone_region = "DE";
       log_type = "systemd";
       serverid = 0;
+      overwriteprotocol = "https";
+      overwritehost = "cloud.dodekaeder.name";
+      trusted_proxies = [
+        "192.168.0.200"
+      ];
     };
 
     extraOptions = {

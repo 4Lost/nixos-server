@@ -14,7 +14,8 @@
           overlays = [ ];
         };
       };
-      defaults = import ./host.nix;
+
+      defaults = import ./system/host.nix;
 
       firefly = import ./services/firefly.nix;
       nextcloud = import ./services/nextcloud.nix;

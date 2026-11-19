@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -6,8 +7,9 @@
 
 let
   dnsRecords = [
-    "firefly"
+    "@"
     "cloud"
+    "firefly"
   ];
   host = {
     name = "nginx";
@@ -19,36 +21,60 @@ let
       443
     ];
   };
+  domainName = "dodekaeder.name";
 in
 {
+  networking.enableIPv6 = true;
+
   _module.args.host = host;
-  imports = [ ../../colmena.nix ];
+
+  imports = [
+    ../../system/colmena.nix
+  ];
 
   services.nginx = {
     enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
+    # recommendedProxySettings = true;
+    # recommendedTlsSettings = true;
 
     virtualHosts = {
-      "firefly.dodekaeder.name" = import ./firefly.nix;
-      "cloud.dodekaeder.name" = import ./nextcloud.nix;
+      "${domainName}" = {
+        forceSSL = true;
+        useACMEHost = "${domainName}";
+
+        acmeRoot = null;
+
+        locations."/" = {
+          return = "200 'Hello from NixOS!'";
+          extraConfig = ''
+            default_type text/plain;
+          '';
+        };
+      };
+      "firefly.${domainName}" = import ./firefly.nix { inherit domainName; };
+      "cloud.${domainName}" = import ./nextcloud.nix { inherit domainName; };
     };
   };
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "elias.schroeter@e.email";
+    defaults.email = "dodekaeder@murena.io";
 
-    certs = {
-      "firefly.dodekaeder.name" = { };
-      "cloud.dodekaeder.name" = { };
+    certs."${domainName}" = {
+      extraDomainNames = [ "*.${domainName}" ];
+
+      dnsProvider = "hetzner";
+      dnsResolver = "[2606:4700:4700::1111]:53";
+      environmentFile = config.sops.secrets.hetzner-api-token.path;
+
+      group = config.services.nginx.group;
     };
   };
 
   sops.secrets.hetzner-api-token.mode = "0400";
 
   systemd.services.hetzner-dns-update = {
-    description = "Update Hetzner DNS A records with the current public IPv4 address";
+    description = "Update Hetzner DNS AAAA records with the current public IPv6 address";
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
 
@@ -58,28 +84,29 @@ in
     };
 
     script = ''
-      #!/usr/bin/env bash
-      export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.curl}/bin:$PATH"
+          #!/usr/bin/env bash
+          export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.curl}/bin:$PATH"
 
-      token="$(cat /run/secrets/hetzner-api-token)"
-      current_ip="$(curl -fsS https://api.ipify.org)"
-      state_file="/var/lib/hetzner-dns-update/last-ip"
+          source /run/secrets/hetzner-api-token
+          token="$HETZNER_API_TOKEN"
+          current_ip="$(curl -6 https://ifconfig.me)"
+          state_file="/var/lib/hetzner-dns-update/last-ip"
 
-      if [ -f "$state_file" ] && [ "$(cat "$state_file")" = "$current_ip" ]; then
-        exit 0
-      fi
+          if [ -f "$state_file" ] && [ "$(cat "$state_file")" = "$current_ip" ]; then
+            exit 0
+          fi
 
-      for record in ${lib.concatStringsSep " " dnsRecords}; do
-        curl -fsS \
-          -X PUT \
-          -H "Authorization: Bearer $token" \
-          -H "Content-Type: application/json" \
-          -d "{\"records\":[{\"value\":\"$current_ip\"}]}" \
-          "https://api.hetzner.cloud/v1/zones/dodekaeder.name/rrsets/$record/A"
-      done
+          for record in ${lib.concatStringsSep " " dnsRecords}; do
+      curl -fsS \
+        -X POST \
+        -H "Authorization: Bearer $token" \
+        -H "Content-Type: application/json" \
+        -d "{\"records\":[{\"value\":\"$current_ip\"}]}" \
+        "https://api.hetzner.cloud/v1/zones/dodekaeder.name/rrsets/$record/AAAA/actions/set_records"
+          done
 
-      mkdir -p /var/lib/hetzner-dns-update
-      printf '%s' "$current_ip" > "$state_file"
+          mkdir -p /var/lib/hetzner-dns-update
+          printf '%s' "$current_ip" > "$state_file"
     '';
   };
 
@@ -87,7 +114,7 @@ in
     wantedBy = [ "timers.target" ];
 
     timerConfig = {
-      OnActiveSec = "1min";
+      OnBootSec = "1min";
       OnUnitActiveSec = "5min";
       Unit = "hetzner-dns-update.service";
     };

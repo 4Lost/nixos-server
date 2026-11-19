@@ -26,7 +26,8 @@ let
 in
 {
   _module.args.host = host;
-  imports = [ ../colmena.nix ];
+  imports = [ ../system/colmena.nix ];
+  networking.enableIPv6 = false;
 
   sops.secrets.firefly_key = {
     owner = "firefly-iii";
@@ -46,6 +47,7 @@ in
       APP_KEY_FILE = config.sops.secrets."firefly_key".path;
       APP_URL = "http://${host.address}";
       DB_CONNECTION = "sqlite";
+      TRUSTED_PROXIES = "192.168.0.200";
       # ENABLE_REGISTRATION = "true";
     };
   };
