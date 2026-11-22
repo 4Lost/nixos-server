@@ -1,63 +1,27 @@
-{
-  modulesPath,
-  pkgs,
-  ...
-}:
+{ modulesPath, pkgs, ... }:
 
 {
-  imports =
-    let
-      commit = "5efb5a6f4f5ab192817d28557dd4d650fa14d866";
-    in
-    [
-      "${
-        builtins.fetchTarball {
-          url = "https://github.com/Mic92/sops-nix/archive/${commit}.tar.gz";
-          sha256 = "0qmskz73girklipfmxwp7w4fmnl6pfjwjdqymvrpqnri0rw6dkxf";
-        }
-      }/modules/sops"
-      (modulesPath + "/virtualisation/proxmox-lxc.nix")
-    ];
+  imports = [
+    (modulesPath + "/virtualisation/proxmox-lxc.nix")
+  ];
 
   nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    sandbox = true;
 
-    sandbox = false;
     trusted-users = [
       "root"
       "elias"
     ];
   };
 
-  security.sudo.wheelNeedsPassword = false;
-
-  networking = {
-    useDHCP = false;
-    nameservers = [
-      "1.1.1.1"
-      "2a02:8100:c0:249::4:1101"
-      "2a02:8100:c0:241::4:1101"
-    ];
-  };
-
-  services.resolved = {
-    enable = true;
-
-    settings.Resolve = {
-      Cache = true;
-      CacheFromLocalhost = true;
-    };
-  };
-
   proxmoxLXC = {
     manageNetwork = false;
+    manageHostName = false;
     privileged = false;
   };
+  services.fstrim.enable = false;
 
-  services.fstrim.enable = false; # Let Proxmox host handle fstrim
+  security.sudo.wheelNeedsPassword = false;
 
   services.openssh = {
     enable = true;
@@ -69,14 +33,12 @@
       KbdInteractiveAuthentication = false;
     };
   };
-  sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
-    age.keyFile = "/etc/sops/key.txt";
-  };
 
   users.users.elias = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+
+    hashedPassword = "$6$pdAJt1f0v7Zb13Ri$1WpKrErAp5JCb7eXs7EeeWYRMBLu5/WKDdMyGzJyYQDijG2NiywUXpAkl/8p1noxOOqYbb.MTw7JmTzhWGsT21";
 
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCTbgre6iWZWDtUJFgVPdzUvs1yTE1IkncPWgXz/5AQGT5ymlTxKQ7dqgjsjuioAM3ok1/Jg8oKX+5HPR3HGdrCwGi6iTVx8I6ojGZXPcqbus8G7UWIDwRJhH/Cx/qNkSFRdd1CK7BEUMTl1Ehgyl9kTbRgr2q1LaX/60qYUUfLi+h1YaC1jkNajN2d+tQnXUUBrauzd4LqDh9Lzh5GG1EARh0PAArzyL/URgFwUUu5RJapjo4yIKWaaG6Z2uUi2sQjtMbZRTYdWVdBHnzRnVJaS/Bc4nxIihtNcwJ/yeSEeRlpyXeX0UnsPK18Uif9jFdM6W4Ww90rinQjZkFIscFyRroflf11d1G4nTMLJIQU7LG0xqd6R50b68sX5qu9t8TI4j/E8PUqBFQ7YRI9y+tWZ36xgbqVcxyZt7IHI8UwzvC9PWxyMlzLBXCit95BQEwzMcQpgRe7BELPlOhnBErnaOXnXPUm5fWiNuNDSIP83VvaXBrTK4D8Fr/YMDxGlWIw3O0ZMwNMMDO4C56OraiWvNhPlxqtQfTkxbKaT613nPjgQWxoIeBK7ld4r8vqpY09Etao2vgP71twfHZMnc1rFK3oeAeWnd63SYOlMVJ3VfHjCo+BUl+rtitUfFfq54XDOxUDEnri7y0G7PwlyVzL9CEF/f3mRke7m21mxpT5/Q== elias.schroeter@e.email"
@@ -87,6 +49,10 @@
     vim
     git
     colmena
+    curl
+    wget
+    htop
+    tmux
   ];
 
   system.stateVersion = "26.05";
