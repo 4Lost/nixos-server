@@ -25,7 +25,7 @@
               #!/usr/bin/env bash
               export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:${pkgs.curl}/bin:$PATH"
 
-              source /run/secrets/hetzner-api-token
+              source /run/secrets/nixos/nginx/hetzner-token
               token="$HETZNER_API_TOKEN"
               current_ip="$(curl -6 https://ifconfig.me)"
               state_file="/var/lib/hetzner-dns-update/last-ip"

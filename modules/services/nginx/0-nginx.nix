@@ -16,6 +16,7 @@
         "cloud"
         "firefly"
       ];
+
       host = {
         name = "nginx";
         address = "192.168.0.200";
@@ -62,7 +63,7 @@
         };
       };
 
-      sops.secrets.hetzner-api-token.mode = "0400";
+      sops.secrets."nixos/nginx/hetzner-token".mode = "0400";
 
       security.acme = {
         acceptTerms = true;
@@ -73,7 +74,7 @@
 
           dnsProvider = "hetzner";
           dnsResolver = "[2606:4700:4700::1111]:53";
-          environmentFile = config.sops.secrets.hetzner-api-token.path;
+          environmentFile = config.sops.secrets."nixos/nginx/hetzner-token".path;
 
           group = config.services.nginx.group;
         };

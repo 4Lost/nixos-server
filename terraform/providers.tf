@@ -1,6 +1,6 @@
 provider "proxmox" {
-  endpoint  = local.secrets.proxmox.api_url
-  api_token = "${local.secrets.proxmox.api_token_id}=${local.secrets.proxmox.api_token_secret}"
+  endpoint  = local.secrets.terraform.proxmox.api.url
+  api_token = "${local.secrets.terraform.proxmox.api.token-id}=${local.secrets.terraform.proxmox.api.token-secret}"
 
   insecure = true
 }

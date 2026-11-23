@@ -10,17 +10,6 @@
     }:
 
     let
-      backupScript = pkgs.writeShellScript "backup.sh" ''
-        #!/usr/bin/env bash
-
-        export PATH="${pkgs.coreutils}/bin:${pkgs.bash}/bin:$PATH"
-
-        rm -rf /home/elias/backup
-        mkdir /home/elias/backup
-        cp -r /var/lib/firefly-iii/storage/database /home/elias/backup/database
-        cp -r /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
-      '';
-
       host = {
         name = "firefly";
         address = "firefly.${domainName}";
@@ -33,7 +22,10 @@
       networking.enableIPv6 = false;
 
       _module.args.host = host;
-      imports = with self.modules.nixos; [ colmena ];
+      imports = with self.modules.nixos; [
+        colmena
+        firefly-backup
+      ];
 
       services.firefly-iii = {
         enable = true;
@@ -44,7 +36,7 @@
 
         settings = {
           APP_ENV = "production";
-          APP_KEY_FILE = config.sops.secrets."firefly_key".path;
+          APP_KEY_FILE = config.sops.secrets."nixos/firefly/key".path;
           APP_URL = "http://${host.address}";
           DB_CONNECTION = "sqlite";
           TRUSTED_PROXIES = "192.168.0.200";
@@ -52,7 +44,7 @@
         };
       };
 
-      sops.secrets.firefly_key = {
+      sops.secrets."nixos/firefly/key" = {
         owner = "firefly-iii";
         group = "nginx";
         mode = "0400";
@@ -65,9 +57,5 @@
           "de_DE.UTF-8/UTF-8"
         ];
       };
-
-      systemd.tmpfiles.rules = [
-        "L+ /home/elias/backup.sh - - - - ${backupScript}"
-      ];
     };
 }

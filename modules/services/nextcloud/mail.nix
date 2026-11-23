@@ -10,7 +10,7 @@
         mail_sendmailmode = "pipe";
       };
 
-      sops.secrets.mail_smtp_password = {
+      sops.secrets."nixos/mail-pwd" = {
         owner = "root";
         mode = "0400";
       };
@@ -30,7 +30,7 @@
           user = "dodekaeder@murena.io";
           from = "dodekaeder@murena.io";
 
-          passwordeval = "cat ${config.sops.secrets.mail_smtp_password.path}";
+          passwordeval = "cat ${config.sops.secrets."nixos/mail-pwd".path}";
         };
       };
     };
