@@ -9,6 +9,8 @@
     }:
 
     {
+      _module.args.domainName = "dodekaeder.name";
+
       imports = with self.modules.nixos; [
         (modulesPath + "/virtualisation/proxmox-lxc.nix")
 

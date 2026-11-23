@@ -3,6 +3,7 @@
 {
   flake.modules.nixos.minecraft =
     {
+      domainName,
       pkgs,
       ...
     }:
@@ -18,8 +19,8 @@
       ''; # TODO
 
       host = {
-        name = "nextcloud";
-        address = "192.168.0.209"; # cloud.dodekaeder.name
+        name = "minecraft";
+        address = "minecraft.${domainName}";
         ip = "192.168.0.209";
         port = 22;
         firewall = [ 43000 ];

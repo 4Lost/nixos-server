@@ -4,6 +4,7 @@
   flake.modules.nixos.nginx =
     {
       config,
+      domainName,
       lib,
       pkgs,
       ...
@@ -25,14 +26,12 @@
           443
         ];
       };
-      domainName = "dodekaeder.name";
     in
     {
       networking.enableIPv6 = true;
 
       _module.args = {
         dnsRecords = dnsRecords;
-        domainName = domainName;
         host = host;
       };
 

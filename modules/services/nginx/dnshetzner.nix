@@ -4,6 +4,7 @@
   flake.modules.nixos.nginx-dns-updater =
     {
       dnsRecords,
+      domainName,
       lib,
       pkgs,
       ...
@@ -39,7 +40,7 @@
             -H "Authorization: Bearer $token" \
             -H "Content-Type: application/json" \
             -d "{\"records\":[{\"value\":\"$current_ip\"}]}" \
-            "https://api.hetzner.cloud/v1/zones/dodekaeder.name/rrsets/$record/AAAA/actions/set_records"
+            "https://api.hetzner.cloud/v1/zones/${domainName}/rrsets/$record/AAAA/actions/set_records"
               done
 
               mkdir -p /var/lib/hetzner-dns-update

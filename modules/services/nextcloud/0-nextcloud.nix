@@ -4,13 +4,14 @@
   flake.modules.nixos.nextcloud =
     {
       config,
+      domainName,
       ...
     }:
 
     let
       host = {
         name = "nextcloud";
-        address = "cloud.dodekaeder.name";
+        address = "cloud.${domainName}";
         ip = "192.168.0.202";
         port = 22;
         firewall = [
@@ -22,7 +23,7 @@
     {
       networking = {
         enableIPv6 = false;
-        hosts."192.168.0.200" = [ "cloud.dodekaeder.name" ];
+        hosts."192.168.0.200" = [ host.address ];
       };
 
       _module.args.host = host;
@@ -51,10 +52,10 @@
           logfile = "${config.services.nextcloud.datadir}/nextcloud.log";
           serverid = 0;
 
-          overwrite.cli.url = "https://cloud.dodekaeder.name";
+          overwrite.cli.url = "https://${host.address}";
           overwriteprotocol = "https";
-          overwritehost = "cloud.dodekaeder.name";
-          trusted_domains = [ "cloud.dodekaeder.name" ];
+          overwritehost = "${host.address}";
+          trusted_domains = [ "${host.address}" ];
           trusted_proxies = [ "192.168.0.200" ];
 
           enforce_theme = "dark";

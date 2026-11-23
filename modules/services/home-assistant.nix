@@ -4,6 +4,7 @@
   flake.modules.nixos.home-assistant =
     {
       config,
+      domainName,
       pkgs,
       ...
     }:
@@ -22,7 +23,7 @@
 
       host = {
         name = "home";
-        address = "home.dodekaeder.name";
+        address = "home.${domainName}";
         ip = "192.168.0.203";
         port = 22;
         firewall = [ 80 ];

@@ -4,6 +4,7 @@
   flake.modules.nixos.firefly =
     {
       config,
+      domainName,
       pkgs,
       ...
     }:
@@ -22,7 +23,7 @@
 
       host = {
         name = "firefly";
-        address = "firefly.dodekaeder.name";
+        address = "firefly.${domainName}";
         ip = "192.168.0.201";
         port = 22;
         firewall = [ 80 ];
