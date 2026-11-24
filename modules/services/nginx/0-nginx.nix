@@ -63,7 +63,7 @@
         };
       };
 
-      sops.secrets."nixos/nginx/hetzner-token".mode = "0400";
+      sops.secrets."nginx/hetzner-token".mode = "0400";
 
       security.acme = {
         acceptTerms = true;
@@ -74,7 +74,7 @@
 
           dnsProvider = "hetzner";
           dnsResolver = "[2606:4700:4700::1111]:53";
-          environmentFile = config.sops.secrets."nixos/nginx/hetzner-token".path;
+          environmentFile = config.sops.secrets."nginx/hetzner-token".path;
 
           group = config.services.nginx.group;
         };

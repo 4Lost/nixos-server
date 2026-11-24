@@ -5,7 +5,7 @@
     { config, ... }:
 
     {
-      sops.secrets."nixos/nextcloud/elias-pwd" = {
+      sops.secrets."nextcloud/elias-pwd" = {
         owner = "nextcloud";
         group = "nextcloud";
         mode = "0400";
@@ -14,7 +14,7 @@
       services.nextcloud.ensureUsers = {
         elias = {
           email = "elias.schroeter@e.email";
-          passwordFile = config.sops.secrets."nixos/nextcloud/elias-pwd".path;
+          passwordFile = config.sops.secrets."nextcloud/elias-pwd".path;
         };
       };
 

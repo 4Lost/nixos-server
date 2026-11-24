@@ -16,7 +16,7 @@
         defaultSopsFile = (self + /secrets/secrets.yaml);
         defaultSopsFormat = "yaml";
         age.keyFile = "/etc/sops/key.txt";
-        secrets."nixos/user-pwd".neededForUsers = true;
+        secrets."user-pwd".neededForUsers = true;
       };
     };
 }

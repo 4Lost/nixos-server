@@ -36,7 +36,7 @@
 
         settings = {
           APP_ENV = "production";
-          APP_KEY_FILE = config.sops.secrets."nixos/firefly/key".path;
+          APP_KEY_FILE = config.sops.secrets."firefly/key".path;
           APP_URL = "http://${host.address}";
           DB_CONNECTION = "sqlite";
           TRUSTED_PROXIES = "192.168.0.200";
@@ -44,7 +44,7 @@
         };
       };
 
-      sops.secrets."nixos/firefly/key" = {
+      sops.secrets."firefly/key" = {
         owner = "firefly-iii";
         group = "nginx";
         mode = "0400";
