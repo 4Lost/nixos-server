@@ -1,11 +1,13 @@
 { ... }:
 
-let
-  inventory = import ../inventory.nix;
-in
 {
   perSystem =
-    { pkgs, tofu, ... }:
+    {
+      config,
+      pkgs,
+      tofu,
+      ...
+    }:
 
     {
       _module.args.tofu = pkgs.opentofu.withPlugins (p: [
@@ -21,14 +23,13 @@ in
         #   spdx = "Apache-2.0";
         # })
       ]);
-
       terranix.terranixConfigurations.tf = {
         workdir = "terraform";
         terraformWrapper = {
           package = tofu;
           extraRuntimeInputs = [ pkgs.sops ];
           prefixText = ''
-            _tofu_secrets="''${PRJ_ROOT:-$PWD}/secrets/tofu.env"
+            _tofu_secrets="''${PRJ_ROOT:-$PWD}/../secrets/tofu.env"
             if [ -f "$_tofu_secrets" ]; then
               set -a
               eval "$(sops -d --output-type dotenv "$_tofu_secrets")"

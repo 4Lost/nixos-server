@@ -9,6 +9,7 @@ result-*
 **/.nixos-test-history
 
 # Terraform
-.terraform*
-terraform/terraform.tfstate*
+terraform/.terraform*
+terraform/config.tf.json
+terraform/terraform.tfstate.*
 terraform/build
