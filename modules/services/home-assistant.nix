@@ -26,7 +26,10 @@
         address = "home.${domainName}";
         ip = "192.168.0.203";
         port = 22;
-        firewall = [ 80 ];
+        firewall = [
+          80
+          8123
+        ];
       };
     in
     {

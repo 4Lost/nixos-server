@@ -9,7 +9,7 @@ rm -f "${OUTPUT_DIR}/nixos-custom-lxc.tar.xz"
 cd "$SCRIPT_DIR"
 
 NIX_PATH="nixpkgs=$(nix-instantiate --find-file nixpkgs)" \
-NIXOS_CONFIG="$SCRIPT_DIR/nixos/configuration.nix" \
+NIXOS_CONFIG="$SCRIPT_DIR/lxc-configuration.nix" \
   nixos-rebuild --no-flake build-image \
   --image-variant proxmox-lxc
 
