@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 
 {
   flake.modules.nixos.configuration =
@@ -18,7 +18,9 @@
         network
         sops
       ];
-
+      nix.nixPath = [
+        "nixpkgs=${inputs.nixpkgs}"
+      ];
       nix.settings = {
         experimental-features = [
           "nix-command"

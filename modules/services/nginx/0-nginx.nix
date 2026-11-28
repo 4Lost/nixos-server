@@ -15,6 +15,8 @@
         "@"
         "cloud"
         "firefly"
+        "home"
+        "wiki"
       ];
 
       host = {
@@ -29,7 +31,10 @@
       };
     in
     {
-      networking.enableIPv6 = true;
+      networking = {
+        enableIPv6 = true;
+        tempAddresses = "disabled";
+      };
 
       _module.args = {
         dnsRecords = dnsRecords;
@@ -41,6 +46,7 @@
         nginx-dns-updater
         nginx-firefly
         nginx-nextcloud
+        nginx-wiki
       ];
 
       services.nginx = {

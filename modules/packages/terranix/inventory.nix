@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   perSystem =
@@ -42,7 +42,15 @@
             name = "home";
             vmId = 203;
 
-            cores = 2;
+            cores = 1;
+            memory = 4096;
+            diskSize = 16;
+          }
+          {
+            name = "wiki";
+            vmId = 204;
+
+            cores = 1;
             memory = 4096;
             diskSize = 16;
           }

@@ -17,6 +17,7 @@
     home-assistant.imports = with self.modules.nixos; [ home-assistant ];
     nextcloud.imports = with self.modules.nixos; [ nextcloud ];
     minecraft.imports = with self.modules.nixos; [ minecraft ];
+    wiki.imports = with self.modules.nixos; [ wiki ];
     nginx.imports = with self.modules.nixos; [ nginx ];
   };
 }
