@@ -24,11 +24,17 @@
         nextcloud-occ maintenance:mode --on
 
         mkdir /home/elias/backup
-        cp -r /var/lib/nextcloud/data /home/elias/backup/data
+
+        echo "Data"
+        sudo cp -r /var/lib/nextcloud/data /home/elias/backup/data
+
+        echo "Database"
         sudo -u postgres pg_dump nextcloud -f "/tmp/database.bak"
-        cp /tmp/database.bak /home/elias/backup/database.bak
+        sudo cp /tmp/database.bak /home/elias/backup/database.bak
 
         nextcloud-occ maintenance:mode --off
+
+        sudo chown -R elias:users /home/elias/backup
       '';
       importScript = pkgs.writeShellScript "backup.sh" ''
         #!/usr/bin/env bash
@@ -43,12 +49,16 @@
 
         nextcloud-occ maintenance:mode --on
 
-        rm -r /var/lib/nextcloud/data
-        cp -r /home/elias/backup/data /var/lib/nextcloud/data
+        sudo rm -r /var/lib/nextcloud/data
 
+        echo "Data"
+        sudo cp -r /home/elias/backup/data /var/lib/nextcloud/data
+
+        echo "Database"
         sudo -u postgres dropdb nextcloud
         sudo -u postgres createdb -O nextcloud nextcloud
         sudo -u postgres psql nextcloud < /home/elias/backup/database.bak
+
         rm -r /home/elias/backup
 
         nextcloud-occ maintenance:mode --off

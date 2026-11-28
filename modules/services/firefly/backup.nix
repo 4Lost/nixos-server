@@ -21,8 +21,14 @@
         }:$PATH"
 
         mkdir /home/elias/backup
-        cp -r /var/lib/firefly-iii/storage/database /home/elias/backup/database
-        cp -r /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
+
+        echo "Database"
+        sudo cp -r /var/lib/firefly-iii/storage/database /home/elias/backup/database
+
+        echo "Upload"
+        sudo cp -r /var/lib/firefly-iii/storage/upload /home/elias/backup/upload
+
+        sudo chown -R elias:users /home/elias/backup
       '';
       importScript = pkgs.writeShellScript "backup.sh" ''
         #!/usr/bin/env bash
@@ -34,11 +40,15 @@
           ]
         }:$PATH"
 
-        mkdir -p /var/lib/firefly-iii/storage
-        cp -r /home/elias/backup/database /var/lib/firefly-iii/storage/database
+        echo "Database"
+        sudo mkdir -p /var/lib/firefly-iii/storage
+        sudo cp -r /home/elias/backup/database /var/lib/firefly-iii/storage/database
 
-        mkdir -p /var/lib/firefly-iii/storage/upload
-        cp -r /home/elias/backup/upload /var/lib/firefly-iii/storage/upload
+        echo "Upload"
+        sudo mkdir -p /var/lib/firefly-iii/storage/upload
+        sudo cp -r /home/elias/backup/upload /var/lib/firefly-iii/storage/upload
+
+        sudo chown -R firefly-iii /var/lib/firefly-iii
       '';
     in
     {
